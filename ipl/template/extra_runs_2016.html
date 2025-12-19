@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+
+<div id="container" style="width:80%; height:400px; margin:auto;"></div>
+
+<script>
+fetch('/extra-runs-2016/')
+  .then(res => res.json())
+  .then(data => {
+
+    Highcharts.chart('container', {
+      chart: { type: 'column' },
+      title: { text: 'Extra Runs Conceded per Team (2016)' },
+
+      xAxis: {
+        categories: data.map(d => d.bowling_team__name),
+        title: { text: 'Teams' }
+      },
+
+      yAxis: {
+        title: { text: 'Extra Runs' }
+      },
+
+      series: [{
+        name: 'Extra Runs',
+        data: data.map(d => d.extra_runs)
+      }]
+    });
+  });
+</script>
+
+</body>
+</html>

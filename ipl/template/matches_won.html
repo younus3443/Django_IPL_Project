@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+fetch('/matches-won-per-year/')
+  .then(res => res.json())
+  .then(data => {
+
+
+    const seasons = [...new Set(data.map(d => d.season))];
+
+
+    const teams = [...new Set(data.map(d => d.winner__name))];
+
+    const series = teams.map(team => {
+      return {
+        name: team,
+        data: seasons.map(season => {
+          const record = data.find(
+            d => d.season === season && d.winner__name === team
+          );
+          return record ? record.wins : 0;
+        })
+      };
+    });
+
+    Highcharts.chart('container', {
+      chart: { type: 'column' },
+      title: { text: 'Matches Won Per Team Per Year' },
+      xAxis: { categories: seasons },
+      yAxis: { title: { text: 'Wins' } },
+      series: series
+    });
+  });
+</script>
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+fetch('/matches-per-year/')
+  .then(res => res.json())
+  .then(data => {
+    Highcharts.chart('container', {
+      chart: { type: 'column' },
+      title: { text: 'Matches Per Year For All Seasons' },
+      xAxis: {
+        categories: data.map(d => d.season)  
+      },
+      series: [{
+        name: 'Matches',
+        data: data.map(d => d.matches)        
+      }]
+    });
+  });
+</script>

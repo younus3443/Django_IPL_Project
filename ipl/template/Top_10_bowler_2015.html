@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+
+<div id="container" style="width:80%; height:400px; margin:auto;"></div>
+
+<script>
+fetch('/top-10-bowler-2015/')
+  .then(res => res.json())
+  .then(data => {
+
+    Highcharts.chart('container', {
+      chart: { type: 'bar' },
+      title: { text: 'Top 10 Economical Bowlers (2015)' },
+
+      xAxis: {
+        categories: data.map(d => d.bowler),
+        title: { text: 'Bowler' }
+      },
+
+      yAxis: {
+        title: { text: 'Economy Rate' }
+      },
+
+      series: [{
+        name: 'Economy',
+        data: data.map(d => Number(d.economy.toFixed(2)))
+      }]
+    });
+  });
+</script>
+
+</body>
+</html>
